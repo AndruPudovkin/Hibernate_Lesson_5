@@ -1,8 +1,6 @@
 package com.andru.spring.rest.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
@@ -13,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name="department")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +22,15 @@ public class Department {
     private String name;
     @Column(name = "salaryAverage")
     private int salaryAverage;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "departmentEmployee")
-    @Fetch(FetchMode.SELECT)
-    @BatchSize(size = 10)
-    @JsonIgnore
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "departmentEmployee")
+
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+            mappedBy = "departmentEmployee", fetch = FetchType.EAGER)
+
+//    @Fetch(FetchMode.SELECT)
+//    @BatchSize(size = 10)
+//    @JsonIgnore
+
     private List<Employee> emps;
 
     public Department() {

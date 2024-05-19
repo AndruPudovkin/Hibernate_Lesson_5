@@ -26,7 +26,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public void saveEmployee(Employee employee) {
         Session session =sessionFactory.getCurrentSession();
-
         session.saveOrUpdate(employee);
     }
 
